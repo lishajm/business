@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE = process.env.REACT_APP_API_URL || 'https://business-proposal-quotation-generator-qurw.onrender.com/api';
+const BASE = process.env.REACT_APP_API_URL || 'https://business-do1s.onrender.com/api';
 
 const api = axios.create({ baseURL: BASE });
 
