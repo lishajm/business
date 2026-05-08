@@ -63,7 +63,7 @@ npm run dev
 # Frontend: http://localhost:3000
 ```
 
-**Default Admin:** `admin@bpqg.com` / `admin123`
+**Default Admin:** `admin@gmail.com` / `admin@123`
 
 ---
 
