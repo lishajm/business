@@ -1,0 +1,15 @@
+node_modules/
+.env
+*.db
+*.db-shm
+*.db-wal
+frontend/build/
+.DS_Store
+node_modules/
+.env
+.env.*
+backend/reset.js
+android/.idea/
+*.log
+.env.production
+*.apk

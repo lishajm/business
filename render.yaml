@@ -1,0 +1,33 @@
+services:
+  # Backend API
+  - type: web
+    name: bpqg-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: JWT_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+      - key: RESEND_API_KEY
+        value: re_jdvYxhTn_4kAXYgKSjD8sNY53LoRje33Y
+      - key: ADMIN_EMAIL
+        value: lishajm.cs@gmail.com
+      - key: FRONTEND_URL
+        value: https://business-proposal-quotation-generator-qurw.onrender.com
+
+  # Frontend Static Site
+  - type: static
+    name: bpqg-frontend
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://business-proposal-quotation-generator-qurw.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">BPQG</string>
+    <string name="title_activity_main">BPQG</string>
+    <string name="package_name">com.bpqg.app</string>
+    <string name="custom_url_scheme">com.bpqg.app</string>
+</resources>
