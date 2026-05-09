@@ -143,10 +143,10 @@ async function initDB() {
 
   const admin = await get("SELECT id FROM users WHERE role='admin' LIMIT 1");
   if (!admin) {
-    const hash = bcrypt.hashSync('admin123',10);
+    const hash = bcrypt.hashSync('admin@123',10);
     await run("INSERT INTO users (name,email,password,role) VALUES (?,?,?,'admin')",
-      ['Super Admin','admin@bpqg.com',hash]);
-    console.log('✅ Default admin: admin@bpqg.com / admin123');
+      ['Super Admin','admin@gmail.com',hash]);
+    console.log('✅ Default admin: admin@gmail.com / admin@123');
   }
 
   const demoClient = await get("SELECT id FROM users WHERE email='demo@gmail.com' LIMIT 1");
