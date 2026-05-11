@@ -141,7 +141,15 @@ async function initDB() {
     FOREIGN KEY (user_id) REFERENCES users(id)
   )`);
 
-  const admin = await get("SELECT id FROM users WHERE role='admin' LIMIT 1");
+  // ── Migrate existing admin credentials to new email/password ─────────
+  const existingAdmin = await get("SELECT id FROM users WHERE email='admin@bpqg.com' AND role='admin'");
+  if (existingAdmin) {
+    const newHash = bcrypt.hashSync('admin@123', 10);
+    await run("UPDATE users SET email='admin@gmail.com', password=? WHERE email='admin@bpqg.com' AND role='admin'", [newHash]);
+    console.log('✅ Migrated admin: admin@gmail.com / admin@123');
+  }
+
+
   if (!admin) {
     const hash = bcrypt.hashSync('admin@123',10);
     await run("INSERT INTO users (name,email,password,role) VALUES (?,?,?,'admin')",

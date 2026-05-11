@@ -38,6 +38,15 @@ function PrivateRoute({ children, role }) {
   return <Layout>{children}</Layout>;
 }
 
+function AdminGate({ children }) {
+  const { user, loading } = useAuth();
+  if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-400">Loading...</div>;
+  // Not logged in → go to login with admin=1 flag so LoginPage auto-opens admin form
+  if (!user) return <Navigate to="/login?admin=1" replace />;
+  if (user.role !== 'admin') return <Navigate to={`/${user.role}`} replace />;
+  return <Layout>{children}</Layout>;
+}
+
 function PublicRoute({ children }) {
   const { user, loading } = useAuth();
   if (loading) return null;
@@ -63,14 +72,14 @@ export default function App() {
           <Route path="/client/proposals/:id" element={<PrivateRoute role="client"><ProposalStatus /></PrivateRoute>} />
           <Route path="/client/meetings" element={<PrivateRoute role="client"><ScheduleMeeting /></PrivateRoute>} />
 
-          {/* Admin */}
-          <Route path="/admin" element={<PrivateRoute role="admin"><AdminDashboard /></PrivateRoute>} />
-          <Route path="/admin/proposals" element={<PrivateRoute role="admin"><AdminProposals /></PrivateRoute>} />
-          <Route path="/admin/proposals/:id" element={<PrivateRoute role="admin"><ProposalReview /></PrivateRoute>} />
-          <Route path="/admin/meetings" element={<PrivateRoute role="admin"><MeetingManagement /></PrivateRoute>} />
-          <Route path="/admin/users" element={<PrivateRoute role="admin"><UserManagement /></PrivateRoute>} />
-          <Route path="/admin/reports" element={<PrivateRoute role="admin"><DeveloperReports /></PrivateRoute>} />
-          <Route path="/admin/logs" element={<PrivateRoute role="admin"><ActivityLogs /></PrivateRoute>} />
+          {/* Admin - /admin URL opens admin login directly */}
+          <Route path="/admin" element={<AdminGate><AdminDashboard /></AdminGate>} />
+          <Route path="/admin/proposals" element={<AdminGate><AdminProposals /></AdminGate>} />
+          <Route path="/admin/proposals/:id" element={<AdminGate><ProposalReview /></AdminGate>} />
+          <Route path="/admin/meetings" element={<AdminGate><MeetingManagement /></AdminGate>} />
+          <Route path="/admin/users" element={<AdminGate><UserManagement /></AdminGate>} />
+          <Route path="/admin/reports" element={<AdminGate><DeveloperReports /></AdminGate>} />
+          <Route path="/admin/logs" element={<AdminGate><ActivityLogs /></AdminGate>} />
 
           {/* Developer */}
           <Route path="/developer" element={<PrivateRoute role="developer"><DeveloperDashboard /></PrivateRoute>} />

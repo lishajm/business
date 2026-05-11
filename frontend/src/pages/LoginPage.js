@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { login as apiLogin } from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
 export default function LoginPage() {
+  const location = useLocation();
+  const isAdminUrl = new URLSearchParams(location.search).get('admin') === '1';
+
   const [form, setForm]           = useState({ email: '', password: '', role: '' });
   const [loading, setLoading]     = useState(false);
   const [showPass, setShowPass]   = useState(false);
-  const [adminMode, setAdminMode] = useState(false);
-  const [adminClicks, setAdminClicks] = useState(0);
+  const [adminMode, setAdminMode] = useState(isAdminUrl);
+  const [adminClicks, setAdminClicks] = useState(isAdminUrl ? 5 : 0);
+
+  useEffect(() => {
+    if (isAdminUrl) {
+      setAdminMode(true);
+      setForm(f => ({ ...f, role: 'admin' }));
+    }
+  }, [isAdminUrl]);
 
   const { login } = useAuth();
   const navigate  = useNavigate();
