@@ -150,6 +150,7 @@ async function initDB() {
   }
 
 
+  const admin = await get("SELECT id FROM users WHERE role='admin' LIMIT 1");
   if (!admin) {
     const hash = bcrypt.hashSync('admin@123',10);
     await run("INSERT INTO users (name,email,password,role) VALUES (?,?,?,'admin')",
